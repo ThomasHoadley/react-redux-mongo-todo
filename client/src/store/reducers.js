@@ -1,9 +1,10 @@
-import { ADD_LIST } from "./actions";
+import { ADD_LIST, DELETE_LIST } from "./actions";
+import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
 	lists: [
 		{
-			id: 1,
+			id: uuidv4(),
 			title: "Shopping List",
 			list: [
 				{ id: 1, listItem: "Eggs" },
@@ -12,7 +13,7 @@ const initialState = {
 			],
 		},
 		{
-			id: 1,
+			id: uuidv4(),
 			title: "Exercise",
 			list: [
 				{ id: 1, listItem: "Run" },
@@ -30,7 +31,7 @@ function listsApp(state = initialState, action) {
 				lists: [
 					...state.lists,
 					{
-						id: 4,
+						id: uuidv4(),
 						title: action.title,
 						list: [
 							{ id: 1, listItem: "Cycle" },
@@ -39,6 +40,12 @@ function listsApp(state = initialState, action) {
 						],
 					},
 				],
+			});
+		case DELETE_LIST:
+			return Object.assign({}, state, {
+				lists: state.lists.filter((list) => {
+					return list.id !== action.id;
+				}),
 			});
 		default:
 			return state;
