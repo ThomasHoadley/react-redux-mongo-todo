@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import ListItem from "./ListItem";
+import { addListItem } from "../store/actions";
 
 class List extends Component {
 	constructor(props) {
 		super(props);
 		this.getList = this.getList.bind(this);
-		this.renderList = this.renderList.bind(this);
+		this.addListItem = this.addListItem.bind(this);
 		this.state = {
-			list: {},
+			title: "",
+			sublist: [],
 		};
 	}
 
@@ -19,24 +21,44 @@ class List extends Component {
 	getList() {
 		var url = window.location.href.split("/");
 		var paramID = url.pop() || url.pop(); // handle potential trailing slash
+		let lists = this.props.lists;
 
-		let list = this.props.lists.filter((list) => {
-			return list.id === paramID;
+		lists.map((list) => {
+			if (list.id == paramID) {
+				this.setState(() => {
+					let newList = this.state.sublist.concat(list.sublist);
+					return {
+						title: list.title,
+						sublist: newList,
+					};
+				});
+			}
 		});
-		this.setState({ list });
 	}
 
-	renderList() {
-		let list = this.state.list[0];
-		console.log(list);
+	addListItem(e) {
+		e.preventDefault();
+		let listTitle = e.target.title.value;
+		this.props.addListItem(listTitle);
+		e.target.title.value = "";
 	}
 
 	render() {
-		this.renderList();
 		return (
 			<div>
-				<h3>{this.state.list.title}</h3>
-				<input type="text" placeholder="Add items" />
+				{this.state.title}
+
+				<form onSubmit={this.addListItem}>
+					<label>
+						Add new list item:
+						<input type="text" name="title" placeholder="List item" />
+					</label>
+					<input type="submit" value="Submit" />
+				</form>
+
+				{(this.state.sublist || []).map((item) => (
+					<ListItem id={item.id} title={item.listItem} />
+				))}
 			</div>
 		);
 	}
@@ -47,4 +69,6 @@ function mapStateToProps(state) {
 	return { lists };
 }
 
-export default connect(mapStateToProps)(List);
+export default connect(mapStateToProps, {
+	addListItem,
+})(List);

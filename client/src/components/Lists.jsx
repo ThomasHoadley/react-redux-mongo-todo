@@ -6,12 +6,12 @@ import { Link } from "react-router-dom";
 class Lists extends Component {
 	constructor(props) {
 		super(props);
-		this.addList = this.addList.bind(this);
+		this.handleAddList = this.handleAddList.bind(this);
 		this.renderLists = this.renderLists.bind(this);
 		this.handleDelete = this.handleDelete.bind(this);
 	}
 
-	addList(e) {
+	handleAddList(e) {
 		e.preventDefault();
 		let listTitle = e.target.title.value;
 		this.props.addList(listTitle);
@@ -45,7 +45,7 @@ class Lists extends Component {
 		return (
 			<div>
 				<br />
-				<form onSubmit={this.addList}>
+				<form onSubmit={this.handleAddList}>
 					<label>
 						Add new list:
 						<input type="text" name="title" placeholder="List title" />

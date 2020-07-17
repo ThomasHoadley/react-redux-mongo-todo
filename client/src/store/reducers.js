@@ -1,4 +1,4 @@
-import { ADD_LIST, DELETE_LIST } from "./actions";
+import { ADD_LIST, DELETE_LIST, ADD_LIST_ITEM } from "./actions";
 import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
@@ -6,7 +6,7 @@ const initialState = {
 		{
 			id: uuidv4(),
 			title: "Shopping List",
-			list: [
+			sublist: [
 				{ id: 1, listItem: "Eggs" },
 				{ id: 2, listItem: "Cheese" },
 				{ id: 3, listItem: "Milk" },
@@ -15,7 +15,7 @@ const initialState = {
 		{
 			id: uuidv4(),
 			title: "Exercise",
-			list: [
+			sublist: [
 				{ id: 1, listItem: "Run" },
 				{ id: 2, listItem: "Back workout" },
 				{ id: 3, listItem: "Leg workout" },
@@ -33,7 +33,7 @@ function listsApp(state = initialState, action) {
 					{
 						id: uuidv4(),
 						title: action.title,
-						list: [
+						sublist: [
 							{ id: 1, listItem: "Cycle" },
 							{ id: 2, listItem: "Arms Workout" },
 							{ id: 3, listItem: "Chest Workout" },
@@ -41,6 +41,24 @@ function listsApp(state = initialState, action) {
 					},
 				],
 			});
+
+		case ADD_LIST_ITEM:
+			return Object.assign({}, state, {
+				lists: state.lists.map((list) => {
+					let newList = {};
+					if (list.id == action.listItem.id) {
+						newList.id = action.listItem.id;
+						newList.sublist = list.sublist.concat({
+							id: uuidv4(),
+							listItem: action.listItem.listItemText,
+						});
+						return Object.assign({}, list, newList);
+					} else {
+						return list;
+					}
+				}),
+			});
+
 		case DELETE_LIST:
 			return Object.assign({}, state, {
 				lists: state.lists.filter((list) => {
