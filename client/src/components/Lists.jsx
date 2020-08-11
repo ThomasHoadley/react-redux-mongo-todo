@@ -8,9 +8,10 @@ class Lists extends Component {
 		super(props);
 		this.handleAddList = this.handleAddList.bind(this);
 		this.renderLists = this.renderLists.bind(this);
-		this.handleDelete = this.handleDelete.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
 	}
 
+  // Don't be afraid of inline event handlers
 	handleAddList(e) {
 		e.preventDefault();
 		let listTitle = e.target.title.value;
@@ -18,6 +19,7 @@ class Lists extends Component {
 		e.target.title.value = "";
 	}
 
+  // TODO: refactor to avoid attribute lookup
 	handleDelete(e) {
 		let listID = e.target.getAttribute("data-id");
 		if (listID !== null) {
@@ -26,12 +28,16 @@ class Lists extends Component {
 	}
 
 	renderLists() {
-		const lists = [];
+    const lists = [];
 		this.props.lists.map((list) => {
-			let { title, id } = list;
+      let { title, id } = list;
+      // TODO: return directly, instead of mapping.
 			lists.push(
+        // TODO: unique keys
+        // https://reactjs.org/docs/lists-and-keys.html
 				<div className="list-item">
 					<Link to={`/list/${id}`}>{title}</Link>
+          {/* TODO: use a button */}
 					<span className="delete-list" data-id={`${id}`}>
 						X
 					</span>
@@ -42,6 +48,7 @@ class Lists extends Component {
 	}
 
 	render() {
+		console.log(this.props)
 		return (
 			<div>
 				<br />
@@ -53,6 +60,7 @@ class Lists extends Component {
 					<input type="submit" value="Submit" />
 				</form>
 				<h3>Please see your lists below.</h3>
+        {/* TODO: use a button, not a div */}
 				<div className="list-container" onClick={this.handleDelete}>
 					{this.renderLists()}
 				</div>

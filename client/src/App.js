@@ -14,11 +14,10 @@ function App({ store }) {
 				<div className="app">
 					<Header />
 					<Switch>
-						<Route exact path="/">
-							<Lists />
-						</Route>
-
-						<Route path="/list/:id" children={<List />} />
+						{/* TODO: use component prop to get router-props */}
+						<Route exact path="/" component={Lists} />
+						{/* TODO avoid mising children props */}
+						<Route path="/list/:id" component={List} />
 					</Switch>
 				</div>
 			</Router>

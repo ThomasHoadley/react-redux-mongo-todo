@@ -2,15 +2,12 @@ import { ADD_LIST, DELETE_LIST, ADD_LIST_ITEM } from "./actions";
 import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
-	lists: [
+	// Consider using a map here
+	lists: {
 		{
 			id: uuidv4(),
 			title: "Shopping List",
-			sublist: [
-				{ id: 1, listItem: "Eggs" },
-				{ id: 2, listItem: "Cheese" },
-				{ id: 3, listItem: "Milk" },
-			],
+			taskIds: [ '1', '2', '3']
 		},
 		{
 			id: uuidv4(),
@@ -21,7 +18,13 @@ const initialState = {
 				{ id: 3, listItem: "Leg workout" },
 			],
 		},
-	],
+	},
+	tasks: {
+		'1', {},
+		'2', {},
+		'3', {},
+	}
+	// Consider splitting entities into lists and tasks
 };
 
 function listsApp(state = initialState, action) {
@@ -60,11 +63,15 @@ function listsApp(state = initialState, action) {
 			});
 
 		case DELETE_LIST:
-			return Object.assign({}, state, {
-				lists: state.lists.filter((list) => {
-					return list.id !== action.id;
-				}),
-			});
+			return {
+				...state,
+				lists: state.lists.filter((list) => list.id !== action.id)
+			}
+			// return Object.assign({}, state, {
+			// 	lists: state.lists.filter((list) => {
+			// 		return list.id !== action.id;
+			// 	}),
+			// });
 		default:
 			return state;
 	}

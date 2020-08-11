@@ -6,36 +6,9 @@ import { addListItem } from "../store/actions";
 class List extends Component {
 	constructor(props) {
 		super(props);
-		this.getList = this.getList.bind(this);
-		this.addListItem = this.addListItem.bind(this);
-		this.state = {
-			title: "",
-			sublist: [],
-		};
 	}
 
-	componentWillMount() {
-		this.getList();
-	}
-
-	getList() {
-		var url = window.location.href.split("/");
-		var paramID = url.pop() || url.pop(); // handle potential trailing slash
-		let lists = this.props.lists;
-
-		lists.map((list) => {
-			if (list.id == paramID) {
-				this.setState(() => {
-					let newList = this.state.sublist.concat(list.sublist);
-					return {
-						title: list.title,
-						sublist: newList,
-					};
-				});
-			}
-		});
-	}
-
+  // TODO: use controlled state, or a ref to clear the value
 	addListItem(e) {
 		e.preventDefault();
 		let listTitle = e.target.title.value;
@@ -44,9 +17,10 @@ class List extends Component {
 	}
 
 	render() {
+		console.log(this.props)
 		return (
 			<div>
-				{this.state.title}
+				{this.props.title}
 
 				<form onSubmit={this.addListItem}>
 					<label>
@@ -56,7 +30,7 @@ class List extends Component {
 					<input type="submit" value="Submit" />
 				</form>
 
-				{(this.state.sublist || []).map((item) => (
+				{(this.props.sublist || []).map((item) => (
 					<ListItem id={item.id} title={item.listItem} />
 				))}
 			</div>
@@ -64,9 +38,31 @@ class List extends Component {
 	}
 }
 
-function mapStateToProps(state) {
+// TODO: derive list state from store state and ownProps here.
+function mapStateToProps(state, ownProps) {
+	const { id } = ownProps.match.params
 	const { lists } = state;
-	return { lists };
+
+	const list = lists.filter(list => {
+		console.log(list)
+		return list.id === id
+	})
+
+	console.log(list)
+
+	// state.lists.map((list) => {
+	// 	if (list.id == paramID) {
+	// 		this.setState(() => {
+	// 			let newList = this.state.sublist.concat(list.sublist);
+	// 			return {
+	// 				title: list.title,
+	// 				sublist: newList,
+	// 			};
+	// 		});
+	// 	}
+	// });
+
+	return { ...list };
 }
 
 export default connect(mapStateToProps, {
