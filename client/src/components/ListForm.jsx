@@ -15,7 +15,7 @@ class ListsForm extends Component {
 					initialValues={{ title: '' }}
 
 					onSubmit={(values, { setSubmitting, resetForm }) => {
-						let title = JSON.stringify(values.title, null, 2);
+						let title = values.title;
 						this.onFormSubmit(title);
 						setSubmitting(false);
 						resetForm();

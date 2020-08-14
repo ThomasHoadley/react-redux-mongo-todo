@@ -6,7 +6,8 @@ class Tasks extends Component {
 		super(props);
 		this.listID = this.props.match.params.id;
 		this.tasks = this.props.lists[this.listID].tasks;
-	}
+	};
+	
 	render() {
 		return (
 			<div className="tasks-page">
@@ -16,7 +17,7 @@ class Tasks extends Component {
 					{
 						this.tasks.map(taskID => {
 							let taskText = tasksState[taskID].text;
-							
+
 							return <p key={taskID}>{taskText}</p>
 						})
 					}

@@ -17,7 +17,7 @@ function App() {
 
 				<Switch>
 					<Route exact path="/">
-						<Lists lists={listsState} />
+						<Lists />
 					</Route>
 
 					{/* List ID is passed in */}
