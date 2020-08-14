@@ -1,28 +1,31 @@
 import React from "react";
-import { Provider } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 
+import listsState from "./state/listsState";
+
 import Header from "./components/Header";
 import Lists from "./components/Lists";
-import List from "./components/List";
+import Tasks from "./components/Tasks";
 
-function App({ store }) {
+
+function App() {
 	return (
-		<Provider store={store}>
-			<Router>
-				<div className="app">
-					<Header />
-					<Switch>
-						<Route exact path="/">
-							<Lists />
-						</Route>
+		<Router>
+			<div className="app">
+				<Header />
 
-						<Route path="/list/:id" children={<List />} />
-					</Switch>
-				</div>
-			</Router>
-		</Provider>
+				<Switch>
+					<Route exact path="/">
+						<Lists lists={listsState} />
+					</Route>
+
+					{/* List ID is passed in */}
+					<Route path="/tasks/:id" render={(props) => <Tasks {...props} lists={listsState} />}></Route>
+
+				</Switch>
+			</div>
+		</Router>
 	);
 }
 
