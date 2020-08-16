@@ -22,7 +22,7 @@ class Lists extends Component {
 						...prevState.lists,
 						[newID]: {
 							title: e,
-							tasks: []
+							tasks: [1, 2, 3]
 						}
 					}
 				})
