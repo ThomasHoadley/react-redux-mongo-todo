@@ -1,32 +1,26 @@
 import React, { Component } from "react";
 import ListForm from "./ListForm";
-import listsState from "../state/listsState";
 
 class Lists extends Component {
-	constructor() {
-		super()
+	constructor(props) {
+		super(props)
+		this.onListsSubmit = this.props.onListsSubmit;
 		this.handleFormSubmit = this.handleFormSubmit.bind(this)
-		this.state = {
-			lists: listsState
-		}
 	}
 
 	handleFormSubmit(e) {
+		let oldLists = this.props.lists;
+		let newID = Object.keys(oldLists).length + 1;
 
-		this.setState(prevState => {
-			const newID = Object.keys(prevState.lists).length + 1;
+		let newLists = {
+			...oldLists,
+			[newID]: {
+				title: e,
+				tasks: []
+			}
+		}
 
-			return (
-				{
-					lists: {
-						...prevState.lists,
-						[newID]: {
-							title: e,
-							tasks: [1, 2, 3]
-						}
-					}
-				})
-		})
+		this.onListsSubmit(newLists);
 	}
 
 	render() {
@@ -36,8 +30,8 @@ class Lists extends Component {
 				<ListForm onFormSubmit={this.handleFormSubmit} />
 
 				<h1>Lists</h1>
-				{Object.keys(this.state.lists).map((key) => {
-					let listItem = this.state.lists[key]
+				{Object.keys(this.props.lists).map((key) => {
+					let listItem = this.props.lists[key]
 					return (
 						<a href={`/tasks/${key}`} key={key} >
 							<h2>{listItem.title}</h2>
