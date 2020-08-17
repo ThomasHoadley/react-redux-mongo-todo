@@ -2,21 +2,20 @@ import React, { Component } from "react";
 import { Formik, Field } from 'formik';
 
 
-class ListsForm extends Component {
+class OneInputForm extends Component {
 	constructor(props) {
 		super(props)
-		this.onFormSubmit = this.props.onFormSubmit;
 	}
 
 	render() {
 		return (
-			<div className="listsForm">
+			<div>
 				<Formik
 					initialValues={{ title: '' }}
 
 					onSubmit={(values, { setSubmitting, resetForm }) => {
 						let title = values.title;
-						this.onFormSubmit(title);
+						this.props.onFormSubmit(title);
 						setSubmitting(false);
 						resetForm();
 					}}
@@ -35,11 +34,11 @@ class ListsForm extends Component {
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.title}
-									placeholder="List title"
+									placeholder={this.props.placeholder}
 								/>
 								<button type="submit" disabled={isSubmitting}>
-									Add list
-           		</button>
+									{this.props.buttonText}
+           			</button>
 							</form>
 						)}
 				</Formik>
@@ -48,4 +47,4 @@ class ListsForm extends Component {
 	}
 }
 
-export default ListsForm;
+export default OneInputForm;

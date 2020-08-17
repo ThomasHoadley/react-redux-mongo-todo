@@ -1,33 +1,23 @@
 import React, { Component } from "react";
-import ListForm from "./ListForm";
+import OneInputForm from "./OneInputForm";
 
 class Lists extends Component {
 	constructor(props) {
 		super(props)
-		this.onListsSubmit = this.props.onListsSubmit;
 		this.handleFormSubmit = this.handleFormSubmit.bind(this)
 	}
 
-	handleFormSubmit(e) {
-		let oldLists = this.props.lists;
-		let newID = Object.keys(oldLists).length + 1;
-
-		let newLists = {
-			...oldLists,
-			[newID]: {
-				title: e,
-				tasks: []
-			}
-		}
-
-		this.onListsSubmit(newLists);
+	handleFormSubmit(listTitle) {
+		console.log(this.props)
+		console.log(listTitle)
+		this.props.onAddList(listTitle)
 	}
 
 	render() {
 		return (
 			<div className="lists">
 
-				<ListForm onFormSubmit={this.handleFormSubmit} />
+				<OneInputForm onFormSubmit={this.handleFormSubmit} placeholder="List name" buttonText="Add list" />
 
 				<h1>Lists</h1>
 				{Object.keys(this.props.lists).map((key) => {
