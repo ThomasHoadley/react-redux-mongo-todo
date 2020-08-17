@@ -3,14 +3,11 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 
-import { createStore } from "redux";
-import listsApp from "./store/reducers";
 import * as serviceWorker from "./serviceWorker";
-const store = createStore(listsApp);
 
 ReactDOM.render(
 	<React.StrictMode>
-		<App store={store} />
+		<App />
 	</React.StrictMode>,
 	document.getElementById("root")
 );
