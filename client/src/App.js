@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { v4 as uui } from 'uuid';
 import "./App.css";
 
 import initialLists from "./state/listsState";
 import initialTasks from "./state/tasksState";
-
 
 import Header from "./components/Header";
 import Lists from "./components/Lists";
@@ -16,16 +16,22 @@ class App extends Component {
 		super()
 
 		this.addList = this.addList.bind(this)
+		this.deleteList = this.deleteList.bind(this)
 		this.addListTask = this.addListTask.bind(this)
+		this.toggleTask = this.toggleTask.bind(this)
+		this.deleteTask = this.deleteTask.bind(this)
+
 		this.state = {
 			lists: JSON.parse(localStorage.getItem('lists')) || initialLists,
 			tasks: JSON.parse(localStorage.getItem('tasks')) || initialTasks
 		};
 	}
 
+	// LIST FUNCTIONS
+
 	addList(listItem) {
 		const oldLists = this.state.lists
-		const newID = Object.keys(oldLists).length + 1;
+		const newID = uui();
 
 		const lists = {
 			...oldLists,
@@ -41,14 +47,45 @@ class App extends Component {
 		localStorage.setItem('lists', JSON.stringify(lists));
 	}
 
+	deleteList(listKey) {
+		let lists = {
+			...this.state.lists
+		}
+		let tasks = {
+			...this.state.tasks
+		}
+
+		const listTasks = lists[listKey].tasks;
+
+		// TODO: Check immutability / best way of doing this
+		listTasks.map(listTask => {
+			delete tasks[listTask];
+		})
+		// Delete the list
+		delete lists[listKey]
+
+		this.setState({
+			...this.state.tasks,
+			...this.state.lists,
+			tasks: tasks,
+			lists: lists
+		})
+		localStorage.setItem('lists', JSON.stringify(lists));
+		localStorage.setItem('tasks', JSON.stringify(tasks));
+	}
+
+	// TASK FUNCTIONS
+
+	// Add Tasks
+
 	addListTask(taskId, newTask) {
-		const oldTasks = this.state.tasks
-		const randomTaskId = Object.keys(oldTasks).length + 1;
+		const randomTaskId = uui();
 
 		const tasks = {
 			...this.state.tasks,
 			[randomTaskId]: {
-				text: newTask
+				text: newTask,
+				complete: false
 			}
 		}
 
@@ -71,8 +108,47 @@ class App extends Component {
 		localStorage.setItem('tasks', JSON.stringify(tasks));
 	}
 
+	// Toogle Task
+
+	toggleTask(taskID) {
+		const tasks = {
+			...this.state.tasks,
+			[taskID]: {
+				...this.state.tasks[taskID],
+				complete: !this.state.tasks[taskID].complete
+			}
+		}
+		this.setState({
+			...this.state.lists,
+			tasks: tasks
+		})
+
+		localStorage.setItem('tasks', JSON.stringify(tasks));
+	}
+
+	// Delete task
+
+	deleteTask(listID, taskID) {
+		console.log(`delete ${taskID}`);
+
+		const lists = {
+			...this.state.lists,
+			[listID]: {
+				...this.state.lists[listID],
+				// TODO: Is this bit immutable?
+				// I'm not sure how to spread the tasks in an immutable way?
+				tasks: this.state.lists[listID].tasks.filter((task) => task !== taskID)
+			}
+		}
+		this.setState({
+			lists: lists
+		})
+		localStorage.setItem('lists', JSON.stringify(lists));
+		// remove it from the array.
+		// remove it from the task state
+	}
+
 	render() {
-		console.log(this.state)
 
 		return (
 			<Router>
@@ -81,11 +157,11 @@ class App extends Component {
 
 					<Switch>
 						<Route exact path="/">
-							<Lists lists={this.state.lists} onAddList={this.addList} />
+							<Lists lists={this.state.lists} onAddList={this.addList} onDeleteList={this.deleteList} />
 						</Route>
 
 						{/* List ID is passed in */}
-						<Route path="/tasks/:id" render={(props) => <Tasks {...props} lists={this.state.lists} tasks={this.state.tasks} onAddTask={this.addListTask} />}></Route>
+						<Route path="/tasks/:id" render={(props) => <Tasks {...props} lists={this.state.lists} tasks={this.state.tasks} onDeleteTask={this.deleteTask} onToggleTask={this.toggleTask} onAddTask={this.addListTask} />}></Route>
 					</Switch>
 				</div>
 			</Router >

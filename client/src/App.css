@@ -1,3 +1,11 @@
 .app {
 	padding: 60px;
 }
+
+.complete {
+	  text-decoration: line-through;
+}
+
+.error {
+	border-color: red;
+}

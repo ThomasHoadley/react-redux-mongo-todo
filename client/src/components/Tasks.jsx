@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import OneInputForm from "./OneInputForm";
+import Task from "./Task";
 
 class Tasks extends Component {
 	constructor(props) {
@@ -11,7 +12,8 @@ class Tasks extends Component {
 	render() {
 		const tasks = this.props.lists[this.listID].tasks.map((taskID, index) => {
 			const taskText = this.props.tasks[taskID].text;
-			return <p key={index}>{taskText}</p>
+			const complete = this.props.tasks[taskID].complete;
+			return <Task key={index} complete={complete} taskID={taskID} listID={this.listID} taskText={taskText} onDeleteTask={this.props.onDeleteTask} onToggleTask={this.props.onToggleTask} />
 		})
 
 		return (

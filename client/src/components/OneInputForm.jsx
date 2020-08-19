@@ -19,6 +19,13 @@ class OneInputForm extends Component {
 						setSubmitting(false);
 						resetForm();
 					}}
+					validate={values => {
+						const errors = {}
+						if (!values.title) {
+							errors.title = true;
+						};
+						return errors;
+					}}
 				>
 					{({
 						values,
@@ -26,6 +33,7 @@ class OneInputForm extends Component {
 						handleBlur,
 						handleSubmit,
 						isSubmitting,
+						errors
 					}) => (
 							<form onSubmit={handleSubmit}>
 								<Field
@@ -34,11 +42,12 @@ class OneInputForm extends Component {
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.title}
+									className={errors.title ? 'error' : ''}
 									placeholder={this.props.placeholder}
 								/>
 								<button type="submit" disabled={isSubmitting}>
 									{this.props.buttonText}
-           			</button>
+								</button>
 							</form>
 						)}
 				</Formik>

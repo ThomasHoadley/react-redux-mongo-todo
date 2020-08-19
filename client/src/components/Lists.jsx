@@ -4,12 +4,11 @@ import OneInputForm from "./OneInputForm";
 class Lists extends Component {
 	constructor(props) {
 		super(props)
+		this.onDeleteList = this.props.onDeleteList.bind(this)
 		this.handleFormSubmit = this.handleFormSubmit.bind(this)
 	}
 
 	handleFormSubmit(listTitle) {
-		console.log(this.props)
-		console.log(listTitle)
 		this.props.onAddList(listTitle)
 	}
 
@@ -17,15 +16,19 @@ class Lists extends Component {
 		return (
 			<div className="lists">
 
+				<h1>Lists</h1>
+
 				<OneInputForm onFormSubmit={this.handleFormSubmit} placeholder="List name" buttonText="Add list" />
 
-				<h1>Lists</h1>
 				{Object.keys(this.props.lists).map((key) => {
 					let listItem = this.props.lists[key]
 					return (
-						<a href={`/tasks/${key}`} key={key} >
-							<h2>{listItem.title}</h2>
-						</a>
+						<div key={key} >
+							<a href={`/tasks/${key}`} >
+								<h2>{listItem.title}</h2>
+							</a>
+							<button onClick={() => { this.props.onDeleteList(key) }}>Delete List</button>
+						</div>
 					)
 				})
 				}
