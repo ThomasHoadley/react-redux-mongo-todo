@@ -1,7 +1,7 @@
 {
 	"name": "onthemoney-test",
 	"version": "1.0.0",
-	"description": "Test by Tom Hoadley for On The Money",
+	"description": "React List Manager",
 	"main": "server.js",
 	"scripts": {
 		"client-install": "cd client && npm install",

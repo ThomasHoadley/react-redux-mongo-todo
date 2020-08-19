@@ -10,6 +10,9 @@ import Header from "./components/Header";
 import Lists from "./components/Lists";
 import Tasks from "./components/Tasks";
 
+// TODO: Add redirect on add list to new list.
+// TODO: Check immutability of the add task.
+// Can this be abstracted?
 
 class App extends Component {
 	constructor() {
