@@ -19,10 +19,10 @@ class App extends Component {
 		};
 	}
 
-	updateState(e) {
-		console.log(e);
-		this.setState(e);
-		localStorage.setItem('lists', JSON.stringify(e));
+	updateState(list) {
+		console.log(list);
+		this.setState({ lists: list });
+		localStorage.setItem('lists', JSON.stringify(list));
 	}
 
 	render() {
