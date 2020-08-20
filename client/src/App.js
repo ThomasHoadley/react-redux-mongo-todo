@@ -14,6 +14,7 @@ import Tasks from "./components/Tasks";
 // TODO: Pull in the list from the server file... 
 // TODO: Can this be abstracted? 
 // TODO: Add redirect on add list to new list.
+// TODO: introduce redux / redux toolkit.
 
 class App extends Component {
 	constructor() {
