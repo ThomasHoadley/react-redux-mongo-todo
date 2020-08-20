@@ -14,6 +14,7 @@ import Tasks from "./components/Tasks";
 // TODO: Can it be abstracted? 
 // TODO: Pull in the list from the server file.
 // TODO: Add redirect on add list to new list.
+// TODO: Introduce some unit tests.
 // TODO: Introduce redux / redux toolkit.
 
 class App extends Component {
@@ -148,8 +149,6 @@ class App extends Component {
 			lists: lists
 		})
 		localStorage.setItem('lists', JSON.stringify(lists));
-		// remove it from the array.
-		// remove it from the task state
 	}
 
 	render() {
