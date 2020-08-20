@@ -11,10 +11,10 @@ import Lists from "./components/Lists";
 import Tasks from "./components/Tasks";
 
 // TODO: Check immutability of the add task.
-// TODO: Pull in the list from the server file... 
-// TODO: Can this be abstracted? 
+// TODO: Can it be abstracted? 
+// TODO: Pull in the list from the server file.
 // TODO: Add redirect on add list to new list.
-// TODO: introduce redux / redux toolkit.
+// TODO: Introduce redux / redux toolkit.
 
 class App extends Component {
 	constructor() {
