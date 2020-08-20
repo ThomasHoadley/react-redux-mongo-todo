@@ -10,9 +10,10 @@ import Header from "./components/Header";
 import Lists from "./components/Lists";
 import Tasks from "./components/Tasks";
 
-// TODO: Add redirect on add list to new list.
 // TODO: Check immutability of the add task.
-// Can this be abstracted?
+// TODO: Pull in the list from the server file... 
+// TODO: Can this be abstracted? 
+// TODO: Add redirect on add list to new list.
 
 class App extends Component {
 	constructor() {
@@ -60,7 +61,7 @@ class App extends Component {
 
 		const listTasks = lists[listKey].tasks;
 
-		// TODO: Check immutability / best way of doing this
+		// TODO: Check immutability / best way of doing this?
 		listTasks.map(listTask => {
 			delete tasks[listTask];
 		})
@@ -132,7 +133,6 @@ class App extends Component {
 	// Delete task
 
 	deleteTask(listID, taskID) {
-		console.log(`delete ${taskID}`);
 
 		const lists = {
 			...this.state.lists,
