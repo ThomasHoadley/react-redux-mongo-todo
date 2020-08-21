@@ -62,7 +62,8 @@ class App extends Component {
 
 		this.setState({
 			loading: false,
-			// ...state,
+			// Adding the example data to state!
+			...state,
 		});
 	}
 
