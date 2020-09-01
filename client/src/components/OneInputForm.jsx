@@ -38,6 +38,7 @@ function OneInputForm(props) {
 								onChange={handleChange}
 								onBlur={handleBlur}
 								value={values.title}
+								// TODO: styling
 								className={errors.title ? 'error' : ''}
 								placeholder={props.placeholder}
 							/>
