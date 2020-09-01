@@ -1,43 +1,35 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import OneInputForm from "./OneInputForm";
 
-class Lists extends Component {
-	constructor(props) {
-		super(props)
-		this.onDeleteList = this.props.onDeleteList.bind(this)
-		this.handleFormSubmit = this.handleFormSubmit.bind(this)
+function Lists(props) {
+
+	function handleFormSubmit(listTitle) {
+		props.onAddList(listTitle, props.history)
 	}
 
-	handleFormSubmit(listTitle) {
-		this.props.onAddList(listTitle, this.props.history)
-	}
+	return (
+		<div className="lists">
 
-	render() {
-		console.log(this.props)
+			<h1>Lists</h1>
 
-		return (
-			<div className="lists">
+			<OneInputForm onFormSubmit={handleFormSubmit} placeholder="List name" buttonText="Add list" />
 
-				<h1>Lists</h1>
-
-				<OneInputForm onFormSubmit={this.handleFormSubmit} placeholder="List name" buttonText="Add list" />
-
-				{Object.keys(this.props.lists).map((key) => {
-					let listItem = this.props.lists[key]
-					return (
-						<div key={key} >
-							<Link to={`/tasks/${key}`} >
-								<h2>{listItem.title}</h2>
-							</Link>
-							<button onClick={() => { this.props.onDeleteList(key) }}>Delete List</button>
-						</div>
-					)
-				})
-				}
-			</div >
-		);
-	}
+			{Object.keys(props.lists).map((key) => {
+				let listItem = props.lists[key]
+				
+				return (
+					<div key={key} >
+						<Link to={`/tasks/${key}`} >
+							<h2>{listItem.title}</h2>
+						</Link>
+						<button onClick={() => { props.onDeleteList(key) }}>Delete List</button>
+					</div>
+				)
+			})
+			}
+		</div >
+	);
 }
 
 export default Lists;

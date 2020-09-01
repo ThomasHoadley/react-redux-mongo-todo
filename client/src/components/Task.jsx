@@ -1,6 +1,6 @@
 import React from "react";
 
-const Task = (props) => {
+function Task(props) {
   return (
     <div>
       <p className={`${props.complete ? 'complete' : ''}`}>

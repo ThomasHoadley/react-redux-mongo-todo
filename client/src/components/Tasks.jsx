@@ -2,45 +2,41 @@ import React, { Component } from "react";
 import OneInputForm from "./OneInputForm";
 import Task from "./Task";
 
-class Tasks extends Component {
-	constructor(props) {
-		super(props);
-		this.listID = this.props.match.params.id;
-		this.taskIDs = this.props.lists[this.listID].tasks;
-	}
+function Tasks(props) {
 
-	render() {
-		const tasks = this.props.lists[this.listID].tasks.map((taskID, index) => {
-			const task = this.props.tasks[taskID];
+	const listID = props.match.params.id;
 
-			if (!task) return null;
-			const { complete, text } = task;
-			return (
-				<Task
-					key={index}
-					complete={complete}
-					onDelete={() => this.props.onDeleteTask(this.listID, taskID)}
-					onComplete={() => this.props.onToggleTask(taskID)}
-					taskText={text}
-				/>
-			);
-		});
+	const tasks = props.lists[listID].tasks.map((taskID, index) => {
+		const task = props.tasks[taskID];
 
+		if (!task) return null;
+
+		const { complete, text } = task;
 		return (
-			<div className="tasks-page">
-				<h1>{this.props.lists[this.listID].title}</h1>
-				<OneInputForm
-					placeholder="Task name"
-					buttonText="Add task"
-					onFormSubmit={(taskName) => {
-						this.props.onAddTask(this.listID, taskName);
-					}}
-				/>
-
-				<div className="task-item">{tasks}</div>
-			</div>
+			<Task
+				key={index}
+				complete={complete}
+				onDelete={() => props.onDeleteTask(listID, taskID)}
+				onComplete={() => props.onToggleTask(taskID)}
+				taskText={text}
+			/>
 		);
-	}
+	});
+
+	return (
+		<div className="tasks-page">
+			<h1>{props.lists[listID].title}</h1>
+			<OneInputForm
+				placeholder="Task name"
+				buttonText="Add task"
+				onFormSubmit={(taskName) => {
+					props.onAddTask(listID, taskName);
+				}}
+			/>
+
+			<div className="task-item">{tasks}</div>
+		</div>
+	);
 }
 
 export default Tasks;

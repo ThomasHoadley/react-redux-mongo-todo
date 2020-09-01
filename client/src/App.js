@@ -9,7 +9,6 @@ import Lists from "./components/Lists";
 import Tasks from "./components/Tasks";
 import { toIdMap } from "./common/toIdMap";
 
-// TODO: Check immutability of the add task.
 // TODO: Can it be abstracted?
 // TODO: Pull in the list from the server file.
 // TODO: Add redirect on add list to new list.
