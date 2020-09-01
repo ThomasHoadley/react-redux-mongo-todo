@@ -1,23 +1,30 @@
-import React, { Component } from "react";
+import React from "react";
 import OneInputForm from "./OneInputForm";
 import Task from "./Task";
+import { useListTasks } from '../hooks/useListTasks'
+import { useTasksAndLists } from "../hooks/useTasksAndLists";
 
 function Tasks(props) {
-
 	const listID = props.match.params.id;
+	// This is another custom hook, that hides logic related to
+	// a certain list in one place.
+	const {
+		title,
+		listTasks,
+		addTaskToList,
+		removeTaskFromList,
+	} = useListTasks(listID);
+	// For toggling lists, we use the shared hook for now.
+	const { toggleTask } = useTasksAndLists();
 
-	const tasks = props.lists[listID].tasks.map((taskID, index) => {
-		const task = props.tasks[taskID];
-
-		if (!task) return null;
-
-		const { complete, text } = task;
+	// Added an extra length check to avoid an error
+	const tasks = listTasks.length > 0 && listTasks.map(({ id, complete, text }) => {
 		return (
 			<Task
-				key={index}
+				key={id}
 				complete={complete}
-				onDelete={() => props.onDeleteTask(listID, taskID)}
-				onComplete={() => props.onToggleTask(taskID)}
+				onDelete={() => removeTaskFromList(id)}
+				onComplete={() => toggleTask(id)}
 				taskText={text}
 			/>
 		);
@@ -25,15 +32,12 @@ function Tasks(props) {
 
 	return (
 		<div className="tasks-page">
-			<h1>{props.lists[listID].title}</h1>
+			<h1>{title}</h1>
 			<OneInputForm
 				placeholder="Task name"
 				buttonText="Add task"
-				onFormSubmit={(taskName) => {
-					props.onAddTask(listID, taskName);
-				}}
+				onFormSubmit={addTaskToList}
 			/>
-
 			<div className="task-item">{tasks}</div>
 		</div>
 	);

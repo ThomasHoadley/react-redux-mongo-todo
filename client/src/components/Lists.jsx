@@ -1,11 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import OneInputForm from "./OneInputForm";
+import { useTasksAndLists } from "../hooks/useTasksAndLists";
 
-function Lists(props) {
+function Lists() {
+	// This component uses a custom hook, which gets values directly
+	// from our context.
+	const { lists, addList, deleteList } = useTasksAndLists()
 
 	function handleFormSubmit(listTitle) {
-		props.onAddList(listTitle, props.history)
+		addList(listTitle)
 	}
 
 	return (
@@ -15,15 +19,15 @@ function Lists(props) {
 
 			<OneInputForm onFormSubmit={handleFormSubmit} placeholder="List name" buttonText="Add list" />
 
-			{Object.keys(props.lists).map((key) => {
-				let listItem = props.lists[key]
+			{Object.keys(lists).map((key) => {
+				let listItem = lists[key]
 				
 				return (
 					<div key={key} >
 						<Link to={`/tasks/${key}`} >
 							<h2>{listItem.title}</h2>
 						</Link>
-						<button onClick={() => { props.onDeleteList(key) }}>Delete List</button>
+						<button onClick={() => deleteList(key)}>Delete List</button>
 					</div>
 				)
 			})
