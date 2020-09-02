@@ -22,18 +22,19 @@ export const TasksAndListsProvider = (props) => {
         const { data } = await axios.get(endpoint);
         return toIdMap(data.items);
       } catch (error) {
+        console.log('error', error)
         setError(error);
         setLoading(false);
       }
     };
 
     const getBoth = async () => {
-      const lists = await getData("/api/lists");
-      const tasks = await getData("/api/tasks");
+      const listsFromApi = await getData("/api/lists");
+      const tasksFromApi = await getData("/api/tasks");
 
       return {
-        lists,
-        tasks,
+        listsFromApi,
+        tasksFromApi,
       };
     };
 
@@ -41,8 +42,14 @@ export const TasksAndListsProvider = (props) => {
       const listsAndTasks = await getBoth();
 
       setLoading(false);
-      setLists(listsAndTasks.lists);
-      setTasks(listsAndTasks.tasks);
+      setLists({
+        ...lists,
+        ...listsAndTasks.listsFromApi
+      });
+      setTasks({
+        ...tasks,
+        ...listsAndTasks.tasksFromApi
+      });
     };
 
     fetchState();
@@ -54,12 +61,13 @@ export const TasksAndListsProvider = (props) => {
     const updatedLists = {
       ...lists,
       [newID]: {
+        id: newID,
         title: listItem,
         tasks: [],
       },
     };
 
-    setLists(lists);
+    setLists(updatedLists);
     localStorage.setItem("lists", JSON.stringify(updatedLists));
 
     // We want to redirect after state has been set here.

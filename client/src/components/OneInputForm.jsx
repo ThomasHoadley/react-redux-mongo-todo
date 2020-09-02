@@ -33,6 +33,7 @@ function OneInputForm(props) {
 				}) => (
 						<form onSubmit={handleSubmit}>
 							<Field
+								aria-label={props.label}
 								type="text"
 								name="title"
 								onChange={handleChange}
